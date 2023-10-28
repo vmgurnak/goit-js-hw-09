@@ -25,6 +25,14 @@
 //     console.log(`❌ Rejected promise ${position} in ${delay}ms`);
 //   });
 
+// Импорт библитеки Notiflix
+// import Notiflix from 'notiflix';
+import { Notify } from 'notiflix/build/notiflix-notify-aio';
+
+Notify.init({
+  useIcon: false,
+});
+
 // Поиск формы
 const form = document.querySelector('.form');
 // Слушатель на форме, событие submit
@@ -46,9 +54,11 @@ function handlerSubmit(event) {
     createPromise(i, delay)
       .then(({ position, delay }) => {
         console.log(`✅ Fulfilled promise ${position} in ${delay}ms`);
+        Notify.success(`✅ Fulfilled promise ${position} in ${delay}ms`);
       })
       .catch(({ position, delay }) => {
         console.log(`❌ Rejected promise ${position} in ${delay}ms`);
+        Notify.failure(`❌ Rejected promise ${position} in ${delay}ms`);
       });
     // увеличение задержки на шаг
     delay += step;
@@ -60,7 +70,7 @@ function createPromise(position, delay) {
   return new Promise((resolve, reject) => {
     // setTimeout - задержка при возврате промисса
     setTimeout(() => {
-      const shouldResolve = Math.random() > 0.3;
+      const shouldResolve = Math.random() > 0.5;
       if (shouldResolve) {
         resolve({ position, delay });
       } else {
